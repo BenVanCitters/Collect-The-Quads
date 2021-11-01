@@ -103,6 +103,44 @@ rot you down to your maximum health limit,
 one point per second.
 */
 
+void() lava_ball_touch;
+
+void() lava_ball_touch =
+{
+//	if (other.armortype*other.armorvalue >= type*value)
+//		return;
+		
+//	other.armortype = type;
+//	other.armorvalue = value;
+//	other.items = other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
+
+//	self.solid = SOLID_NOT;
+//	self.model = string_null;
+//	if (deathmatch)
+//		self.nextthink = time + 20;
+	//self.think = SUB_regen;
+
+	//sprint(other, "You got armor\n");
+// armor touch sound
+	//sound(other, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
+//	stuffcmd (other, "bf\n");
+	
+	//activator = other;
+	//SUB_UseTargets();	
+};
+
+
+void() lavaItem = 
+{
+	precache_model("progs/lavaball.mdl");	
+	setmodel(self, "progs/lavaball.mdl");
+	precache_sound("player/lburn1.wav");
+	self.noise = "player/lburn1.wav";
+	
+	setsize (self, '-16 -16 0', '16 16 56');
+	//self.touch = lava_ball_touch();
+}
+
 float	H_ROTTEN = 1;
 float	H_MEGA = 2;
 .float	healamount, healtype;
@@ -115,30 +153,20 @@ void() item_health =
 
 	if (self.spawnflags & H_ROTTEN)
 	{
-		precache_model("maps/b_bh10.bsp");
-
-		precache_sound("items/r_item1.wav");
-		setmodel(self, "maps/b_bh10.bsp");
-		self.noise = "items/r_item1.wav";
+		lavaItem();
 		self.healamount = 15;
 		self.healtype = 0;
 	}
 	else
 	if (self.spawnflags & H_MEGA)
 	{
-		precache_model("maps/b_bh100.bsp");
-		precache_sound("items/r_item2.wav");
-		setmodel(self, "maps/b_bh100.bsp");
-		self.noise = "items/r_item2.wav";
+		lavaItem();
 		self.healamount = 100;
 		self.healtype = 2;
 	}
 	else
 	{
-		precache_model("maps/b_bh25.bsp");
-		precache_sound("items/health1.wav");
-		setmodel(self, "maps/b_bh25.bsp");
-		self.noise = "items/health1.wav";
+		lavaItem();
 		self.healamount = 25;
 		self.healtype = 1;
 	}
@@ -287,10 +315,7 @@ void() armor_touch =
 void() item_armor1 =
 {
 	self.touch = armor_touch;
-	precache_model ("progs/armor.mdl");
-	setmodel (self, "progs/armor.mdl");
-	self.skin = 0;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -300,10 +325,7 @@ void() item_armor1 =
 void() item_armor2 =
 {
 	self.touch = armor_touch;
-	precache_model ("progs/armor.mdl");
-	setmodel (self, "progs/armor.mdl");
-	self.skin = 1;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -313,10 +335,7 @@ void() item_armor2 =
 void() item_armorInv =
 {
 	self.touch = armor_touch;
-	precache_model ("progs/armor.mdl");
-	setmodel (self, "progs/armor.mdl");
-	self.skin = 2;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -501,12 +520,7 @@ void() weapon_touch =
 
 void() weapon_supershotgun =
 {
-	precache_model ("progs/g_shot.mdl");
-	setmodel (self, "progs/g_shot.mdl");
-	self.weapon = IT_SUPER_SHOTGUN;
-	self.netname = "Double-barrelled Shotgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -515,12 +529,7 @@ void() weapon_supershotgun =
 
 void() weapon_nailgun =
 {
-	precache_model ("progs/g_nail.mdl");
-	setmodel (self, "progs/g_nail.mdl");
-	self.weapon = IT_NAILGUN;
-	self.netname = "nailgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -529,12 +538,7 @@ void() weapon_nailgun =
 
 void() weapon_supernailgun =
 {
-	precache_model ("progs/g_nail2.mdl");
-	setmodel (self, "progs/g_nail2.mdl");
-	self.weapon = IT_SUPER_NAILGUN;
-	self.netname = "Super Nailgun";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -543,12 +547,7 @@ void() weapon_supernailgun =
 
 void() weapon_grenadelauncher =
 {
-	precache_model ("progs/g_rock.mdl");
-	setmodel (self, "progs/g_rock.mdl");
-	self.weapon = 3;
-	self.netname = "Grenade Launcher";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -557,12 +556,7 @@ void() weapon_grenadelauncher =
 
 void() weapon_rocketlauncher =
 {
-	precache_model ("progs/g_rock2.mdl");
-	setmodel (self, "progs/g_rock2.mdl");
-	self.weapon = 3;
-	self.netname = "Rocket Launcher";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -572,12 +566,7 @@ void() weapon_rocketlauncher =
 
 void() weapon_lightning =
 {
-	precache_model ("progs/g_light.mdl");
-	setmodel (self, "progs/g_light.mdl");
-	self.weapon = 3;
-	self.netname = "Thunderbolt";
-	self.touch = weapon_touch;
-	setsize (self, '-16 -16 0', '16 16 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -686,23 +675,7 @@ float WEAPON_BIG2 = 1;
 
 void() item_shells =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_shell1.bsp");
-		setmodel (self, "maps/b_shell1.bsp");
-		self.aflag = 40;
-	}
-	else
-	{
-		precache_model ("maps/b_shell0.bsp");
-		setmodel (self, "maps/b_shell0.bsp");
-		self.aflag = 20;
-	}
-	self.weapon = 1;
-	self.netname = "shells";
-	setsize (self, '0 0 0', '32 32 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -711,23 +684,7 @@ void() item_shells =
 
 void() item_spikes =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_nail1.bsp");
-		setmodel (self, "maps/b_nail1.bsp");
-		self.aflag = 50;
-	}
-	else
-	{
-		precache_model ("maps/b_nail0.bsp");
-		setmodel (self, "maps/b_nail0.bsp");
-		self.aflag = 25;
-	}
-	self.weapon = 2;
-	self.netname = "nails";
-	setsize (self, '0 0 0', '32 32 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -736,23 +693,7 @@ void() item_spikes =
 
 void() item_rockets =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_rock1.bsp");
-		setmodel (self, "maps/b_rock1.bsp");
-		self.aflag = 10;
-	}
-	else
-	{
-		precache_model ("maps/b_rock0.bsp");
-		setmodel (self, "maps/b_rock0.bsp");
-		self.aflag = 5;
-	}
-	self.weapon = 3;
-	self.netname = "rockets";
-	setsize (self, '0 0 0', '32 32 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -762,23 +703,7 @@ void() item_rockets =
 
 void() item_cells =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_BIG2)
-	{
-		precache_model ("maps/b_batt1.bsp");
-		setmodel (self, "maps/b_batt1.bsp");
-		self.aflag = 12;
-	}
-	else
-	{
-		precache_model ("maps/b_batt0.bsp");
-		setmodel (self, "maps/b_batt0.bsp");
-		self.aflag = 6;
-	}
-	self.weapon = 4;
-	self.netname = "cells";
-	setsize (self, '0 0 0', '32 32 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -793,63 +718,7 @@ float WEAPON_SPIKES = 4;
 float WEAPON_BIG = 8;
 void() item_weapon =
 {
-	self.touch = ammo_touch;
-
-	if (self.spawnflags & WEAPON_SHOTGUN)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_shell1.bsp");
-			setmodel (self, "maps/b_shell1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_shell0.bsp");
-			setmodel (self, "maps/b_shell0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 1;
-		self.netname = "shells";
-	}
-
-	if (self.spawnflags & WEAPON_SPIKES)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_nail1.bsp");
-			setmodel (self, "maps/b_nail1.bsp");
-			self.aflag = 40;
-		}
-		else
-		{
-			precache_model ("maps/b_nail0.bsp");
-			setmodel (self, "maps/b_nail0.bsp");
-			self.aflag = 20;
-		}
-		self.weapon = 2;
-		self.netname = "spikes";
-	}
-
-	if (self.spawnflags & WEAPON_ROCKET)
-	{
-		if (self.spawnflags & WEAPON_BIG)
-		{
-			precache_model ("maps/b_rock1.bsp");
-			setmodel (self, "maps/b_rock1.bsp");
-			self.aflag = 10;
-		}
-		else
-		{
-			precache_model ("maps/b_rock0.bsp");
-			setmodel (self, "maps/b_rock0.bsp");
-			self.aflag = 5;
-		}
-		self.weapon = 3;
-		self.netname = "rockets";
-	}
-	
-	setsize (self, '0 0 0', '32 32 56');
+	lavaItem();
 	StartItem ();
 };
 
@@ -923,28 +792,7 @@ following:
 
 void() item_key1 =
 {
-	if (world.worldtype == 0)
-	{
-		precache_model ("progs/w_s_key.mdl");
-		setmodel (self, "progs/w_s_key.mdl");
-		self.netname = "silver key";
-	}
-	else if (world.worldtype == 1)
-	{
-		precache_model ("progs/m_s_key.mdl");
-		setmodel (self, "progs/m_s_key.mdl");
-		self.netname = "silver runekey";
-	}
-	else if (world.worldtype == 2)
-	{
-		precache_model2 ("progs/b_s_key.mdl");
-		setmodel (self, "progs/b_s_key.mdl");
-		self.netname = "silver keycard";
-	}
-	key_setsounds();
-	self.touch = key_touch;
-	self.items = IT_KEY1;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -961,28 +809,7 @@ following:
 
 void() item_key2 =
 {
-	if (world.worldtype == 0)
-	{
-		precache_model ("progs/w_g_key.mdl");
-		setmodel (self, "progs/w_g_key.mdl");
-		self.netname = "gold key";
-	}
-	if (world.worldtype == 1)
-	{
-		precache_model ("progs/m_g_key.mdl");
-		setmodel (self, "progs/m_g_key.mdl");
-		self.netname = "gold runekey";
-	}
-	if (world.worldtype == 2)
-	{
-		precache_model2 ("progs/b_g_key.mdl");
-		setmodel (self, "progs/b_g_key.mdl");
-		self.netname = "gold keycard";
-	}
-	key_setsounds();
-	self.touch = key_touch;
-	self.items = IT_KEY2;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -1024,35 +851,7 @@ End of level sigil, pick up to end episode and return to jrstart.
 
 void() item_sigil =
 {
-	if (!self.spawnflags)
-		objerror ("no spawnflags");
-
-	precache_sound ("misc/runekey.wav");
-	self.noise = "misc/runekey.wav";
-
-	if (self.spawnflags & 1)
-	{
-		precache_model ("progs/end1.mdl");
-		setmodel (self, "progs/end1.mdl");
-	}
-	if (self.spawnflags & 2)
-	{
-		precache_model2 ("progs/end2.mdl");
-		setmodel (self, "progs/end2.mdl");
-	}
-	if (self.spawnflags & 4)
-	{
-		precache_model2 ("progs/end3.mdl");
-		setmodel (self, "progs/end3.mdl");
-	}
-	if (self.spawnflags & 8)
-	{
-		precache_model2 ("progs/end4.mdl");
-		setmodel (self, "progs/end4.mdl");
-	}
-	
-	self.touch = sigil_touch;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -1134,17 +933,7 @@ Player is invulnerable for 30 seconds
 */
 void() item_artifact_invulnerability =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/invulner.mdl");
-	precache_sound ("items/protect.wav");
-	precache_sound ("items/protect2.wav");
-	precache_sound ("items/protect3.wav");
-	self.noise = "items/protect.wav";
-	setmodel (self, "progs/invulner.mdl");
-	self.netname = "Pentagram of Protection";
-	self.items = IT_INVULNERABILITY;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -1153,16 +942,7 @@ Player takes no damage from water or slime for 30 seconds
 */
 void() item_artifact_envirosuit =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/suit.mdl");
-	precache_sound ("items/suit.wav");
-	precache_sound ("items/suit2.wav");
-	self.noise = "items/suit.wav";
-	setmodel (self, "progs/suit.mdl");
-	self.netname = "Biosuit";
-	self.items = IT_SUIT;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -1172,17 +952,7 @@ Player is invisible for 30 seconds
 */
 void() item_artifact_invisibility =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/invisibl.mdl");
-	precache_sound ("items/inv1.wav");
-	precache_sound ("items/inv2.wav");
-	precache_sound ("items/inv3.wav");
-	self.noise = "items/inv1.wav";
-	setmodel (self, "progs/invisibl.mdl");
-	self.netname = "Ring of Shadows";
-	self.items = IT_INVISIBILITY;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 
@@ -1192,17 +962,7 @@ The next attack from the player will do 4x damage
 */
 void() item_artifact_super_damage =
 {
-	self.touch = powerup_touch;
-
-	precache_model ("progs/quaddama.mdl");
-	precache_sound ("items/damage.wav");
-	precache_sound ("items/damage2.wav");
-	precache_sound ("items/damage3.wav");
-	self.noise = "items/damage.wav";
-	setmodel (self, "progs/quaddama.mdl");
-	self.netname = "Quad Damage";
-	self.items = IT_QUAD;
-	setsize (self, '-16 -16 -24', '16 16 32');
+	lavaItem();
 	StartItem ();
 };
 

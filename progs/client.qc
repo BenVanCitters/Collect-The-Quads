@@ -1298,8 +1298,7 @@ void(entity targ, entity attacker) ClientObituary =
 					{
 						deathstring = " was gibbed by ";
 						deathstring2 = "'s rocket\n" ;
-					}
-					targ.frags = targ.frags - 2;
+					}				
 				}
 				if (rnum == IT_LIGHTNING)
 				{
