@@ -42,7 +42,6 @@ void() PlaceItem =
 	self.solid = SOLID_TRIGGER;
 	self.movetype = MOVETYPE_TOSS;	
 	self.velocity = '0 0 0';
-	self.origin_z = self.origin_z + 6;
 	oldz = self.origin_z;
 	if (!droptofloor())
 	{
@@ -150,15 +149,15 @@ void() checkRemainingBalls =
 	//sprint (other, "found ");
 	//sprint (other, ftos(nonSolid));
 	//sprint (other, "other balls!\n");
-	if(ballCount > 25)
+	if(ballCount > 1)
 	{
 		sprint (other, ftos(ballCount));
-		sprint (other, " balls left!\n");
+		sprint (other, " Quads left!\n");
 	}
 	else
 	{
-		dprint ("Everything die\n");
-		sprint (other, "Everything die\n");
+		//dprint ("Everything die\n");
+		sprint (other, "Everything collected; resetting!\n");
 		head = spawn();
 		head.nextthink = time + 2;
 		//no balls kill everything and regen
@@ -210,7 +209,6 @@ void() lavaItemNoPre =
 	self.touch = lava_ball_touch;
 	setmodel(self, "progs/quaddama.mdl");
 	self.noise = "player/lburn1.wav";
-	setsize (self, '-16 -16 0', '16 16 56');
 	self.classname = "item_collectBall";
 	self.health = 100;
 	StartItem ();
@@ -221,15 +219,9 @@ void() lavaItemNoPre =
 void() lavaItem = 
 {
 	//dprint ("spawn lavaItem");
-	self.touch = lava_ball_touch;
 	precache_model ("progs/quaddama.mdl");
-	setmodel (self, "progs/quaddama.mdl");
 	precache_sound("player/lburn1.wav");
-	self.noise = "player/lburn1.wav";
-	setsize (self, '-16 -16 0', '16 16 56');
-	self.classname = "item_collectBall";
-	self.health = 100;
-	StartItem ();
+	lavaItemNoPre();
 }
 
 float	H_ROTTEN = 1;
