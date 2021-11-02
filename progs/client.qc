@@ -63,14 +63,14 @@ void() SetChangeParms =
 
 void() SetNewParms =
 {
-	parm1 = IT_SHOTGUN | IT_AXE;
+	parm1 = IT_ROCKET_LAUNCHER | IT_AXE;
 	parm2 = 100;
 	parm3 = 0;
 	parm4 = 25;
 	parm5 = 0;
-	parm6 = 0;
+	parm6 = 100;
 	parm7 = 0;
-	parm8 = 1;
+	parm8 = IT_ROCKET_LAUNCHER;
 	parm9 = 0;
 };
 
@@ -387,7 +387,7 @@ void() ClientKill =
 	bprint (" suicides\n");
 	set_suicide_frame ();
 	self.modelindex = modelindex_player;
-	self.frags = self.frags - 2;	// extra penalty
+	//self.frags = self.frags - 2;	// extra penalty
 	respawn ();
 };
 
@@ -1202,7 +1202,7 @@ void(entity targ, entity attacker) ClientObituary =
 			bprint (attacker.owner.netname);
 			bprint ("\n");
 
-			attacker.owner.frags = attacker.owner.frags + 1;
+			//attacker.owner.frags = attacker.owner.frags + 1;
 			return;
 		}
 
@@ -1212,7 +1212,7 @@ void(entity targ, entity attacker) ClientObituary =
 			bprint (targ.netname);
 			bprint ("'s telefrag\n");
 
-			targ.frags = targ.frags - 1;
+			//targ.frags = targ.frags - 1;
 			return;
 		}
 
@@ -1221,7 +1221,7 @@ void(entity targ, entity attacker) ClientObituary =
 			if (targ == attacker)
 			{
 				// killed self
-				attacker.frags = attacker.frags - 1;
+				//attacker.frags = attacker.frags - 1;
 				bprint (targ.netname);
 				
 				if (targ.weapon == 64 && targ.waterlevel > 1)
@@ -1247,12 +1247,12 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = " loses another friend\n";
 				bprint (attacker.netname);
 				bprint (deathstring);
-				attacker.frags = attacker.frags - 1;
+				//attacker.frags = attacker.frags - 1;
 				return;
 			}
 			else
 			{
-				attacker.frags = attacker.frags + 1;
+				//attacker.frags = attacker.frags + 1;
 
 				rnum = attacker.weapon;
 				if (rnum == IT_AXE)
@@ -1317,7 +1317,7 @@ void(entity targ, entity attacker) ClientObituary =
 		}
 		else
 		{
-			targ.frags = targ.frags - 1;
+			//targ.frags = targ.frags - 1;
 			bprint (targ.netname);
 
 			// killed by a montser?
