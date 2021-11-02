@@ -102,50 +102,84 @@ megahealth will add 100 health, then
 rot you down to your maximum health limit, 
 one point per second.
 */
-void() lavaItem;
+
+
+void() lavaItemNoPre;
+void() killEverything = 
+{
+	local	entity itr;
+	itr = findradius(self.origin, 10000);
+	while (itr)
+	{
+		if (itr.classname == "item_collectBall" && (itr.health < 10))
+		{
+			itr.nextthink = time + .1;
+			itr.think = lavaItemNoPre;
+		}
+		else
+		if (itr.takedamage)
+		{
+			T_Damage (itr, itr, itr, 1000);
+		}
+		itr = itr.chain;
+	}
+}
+
 void() checkRemainingBalls = 
 {
-	local float ballCount;
+	local float ballCount, nonSolid;
 	
 	local	entity	head,itr;
-	itr = head = findradius(self.origin, 10000);
+	itr = findradius(self.origin, 10000);
 	
 	while (itr)
 	{
 		if (itr.classname == "item_collectBall" && (itr.health > 0))
 		{
 			ballCount = ballCount+1;
+
 		}
+		else//if(itr.classname == "item_collectBall" && itr.solid == SOLID_NOT)
+		{
+			nonSolid = nonSolid + 1;
+		}		
 		
 		itr = itr.chain;
 	}
 		
-	if(ballCount > 0)
+	//sprint (other, "found ");
+	//sprint (other, ftos(nonSolid));
+	//sprint (other, "other balls!\n");
+	if(ballCount > 25)
 	{
 		sprint (other, ftos(ballCount));
 		sprint (other, " balls left!\n");
 	}
 	else
 	{
-		sprint (other, "Everything die");
+		dprint ("Everything die\n");
+		sprint (other, "Everything die\n");
+		head = spawn();
+		head.nextthink = time + 2;
 		//no balls kill everything and regen
-		itr.nextthink = time + 5;
-		itr.think = lavaItem;
-		
+		head.think = killEverything;	
 	}
 }
+
+void() lava_nothing()={}
 
 void() lava_ball_touch;
 
 void() lava_ball_touch =
 {
+	dprint ("lava_ball_touch");
 	if (other.classname != "player")
 		return;
 	if (other.health <= 0)
 		return;
 
 	//sprint (other, "You got a ball!\n");
-	
+	other.frags = other.frags + 1;
 	
 	sound(other, CHAN_ITEM, self.noise, 1, ATTN_NORM);
 //	if (other.armortype*other.armorvalue >= type*value)
@@ -155,9 +189,10 @@ void() lava_ball_touch =
 //	other.armorvalue = value;
 //	other.items = other.items - (other.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + bit;
 	self.health = 0;
-	self.solid = SOLID_NOT;
+	//self.solid = SOLID_NOT;
 	self.model = string_null;
 	self.nextthink = -1;
+	self.touch = lava_nothing;
 //	if (deathmatch)
 //		self.nextthink = time + 20;
 	//self.think = SUB_regen;
@@ -166,15 +201,29 @@ void() lava_ball_touch =
 	checkRemainingBalls();
 	stuffcmd (other, "bf\n");	
 	activator = other;
-	SUB_UseTargets();		
+	//SUB_UseTargets();		
 };
+
+void() lavaItemNoPre = 
+{
+	//dprint ("spawn lavaItem");
+	self.touch = lava_ball_touch;
+	setmodel(self, "progs/quaddama.mdl");
+	self.noise = "player/lburn1.wav";
+	setsize (self, '-16 -16 0', '16 16 56');
+	self.classname = "item_collectBall";
+	self.health = 100;
+	StartItem ();
+}
+
 
 
 void() lavaItem = 
 {
+	//dprint ("spawn lavaItem");
 	self.touch = lava_ball_touch;
-	precache_model("progs/lavaball.mdl");	
-	setmodel(self, "progs/lavaball.mdl");
+	precache_model ("progs/quaddama.mdl");
+	setmodel (self, "progs/quaddama.mdl");
 	precache_sound("player/lburn1.wav");
 	self.noise = "player/lburn1.wav";
 	setsize (self, '-16 -16 0', '16 16 56');
