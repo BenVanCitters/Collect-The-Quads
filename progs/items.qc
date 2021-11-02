@@ -151,21 +151,23 @@ void() checkRemainingBalls =
 	//sprint (other, "other balls!\n");
 	if(ballCount > 1)
 	{
-		sprint (other, ftos(ballCount));
-		sprint (other, " Quads left!\n");
+		bprint (other.netname);
+		bprint (" found a Quad!!  ");
+		bprint (ftos(ballCount));
+		bprint (" Quads remain!\n");
 	}
 	else
 	{
 		//dprint ("Everything die\n");
-		sprint (other, "Everything collected; resetting!\n");
+		bprint ("All quads collected; resettining 3 seconds!\n");
 		head = spawn();
-		head.nextthink = time + 2;
+		head.nextthink = time + 3;
 		//no balls kill everything and regen
 		head.think = killEverything;	
 	}
 }
 
-void() lava_nothing()={}
+void() lava_nothing={}
 
 void() lava_ball_touch;
 
